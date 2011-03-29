@@ -1,0 +1,11 @@
+bin
+build
+target
+
+.classpath
+.project
+.settings
+.scala_dependencies
+.gradle
+
+.DS_Store?
