@@ -34,6 +34,7 @@ dependencies {
     	"net.liftweb:lift-actor_$scalaVersion:$liftVersion",
     	"net.liftweb:lift-common_$scalaVersion:$liftVersion",
     	"net.liftweb:lift-json_$scalaVersion:$liftVersion", 
+        "net.liftweb:lift-mongodb-record_$scalaVersion:$liftVersion",
         "ch.qos.logback:logback-classic:0.9.28",
         "ch.qos.logback:logback-core:0.9.28",
         "com.h2database:h2:1.2.138"

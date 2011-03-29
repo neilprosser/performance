@@ -2,6 +2,7 @@ package bootstrap.liftweb
 
 import net.liftweb._
 import util._
+import mongodb._
 import Helpers._
 
 import common._
@@ -9,7 +10,7 @@ import http._
 import sitemap._
 import Loc._
 
-import performance._
+import code.snippet._
 
 /**
  * A class that's instantiated early and run.  It allows the application
@@ -46,6 +47,8 @@ class Boot {
 
     // Force the request to be UTF-8
     LiftRules.early.append(_.setCharacterEncoding("UTF-8"))
+    
+    MongoDB.defineDb(DefaultMongoIdentifier, MongoAddress(MongoHost("localhost", 27017), "performance"))
 
   }
 }
