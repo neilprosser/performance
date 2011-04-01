@@ -1,21 +1,22 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml version="1.0"?>
 
-<!DOCTYPE web-app
-PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
-"http://java.sun.com/dtd/web-app_2_3.dtd">
+<!DOCTYPE web-app PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+        "http://java.sun.com/dtd/web-app_2_4.dtd">
 
 <web-app>
-<filter>
-  <filter-name>LiftFilter</filter-name>
-  <display-name>Lift Filter</display-name>
-  <description>The Filter that intercepts lift calls</description>
-  <filter-class>net.liftweb.http.LiftFilter</filter-class>
-</filter>
-  	
 
-<filter-mapping>
-  <filter-name>LiftFilter</filter-name>
-  <url-pattern>/*</url-pattern>
-</filter-mapping>
+	<listener>
+		<listener-class>akka.servlet.Initializer</listener-class>
+	</listener>
+
+	<servlet>
+		<servlet-name>AkkaMistServlet</servlet-name>
+		<servlet-class>akka.http.AkkaMistServlet</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>AkkaMistServlet</servlet-name>
+		<url-pattern>/*</url-pattern>
+	</servlet-mapping>
 
 </web-app>
