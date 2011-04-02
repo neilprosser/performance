@@ -1,4 +1,4 @@
-package com.example
+package com.ninjakoala.performance
 
 import akka.config.Supervision._
 import akka.actor.Supervisor
@@ -8,7 +8,7 @@ import utils.ActorHelpers._
 
 class Boot {
   
-  val mainModule = new HelloServiceBuilder {
+  val mainModule = new PerformanceServiceBuilder {
     // bake your module cake here
   }
   
@@ -24,5 +24,5 @@ class Boot {
   
   // attach an HttpService (which is also an actor)
   // the root service automatically starts the HttpService if it is unstarted
-  actor[RootService] ! Attach(HttpService(mainModule.helloService))
+  actor[RootService] ! Attach(HttpService(mainModule.performanceService))
 }
