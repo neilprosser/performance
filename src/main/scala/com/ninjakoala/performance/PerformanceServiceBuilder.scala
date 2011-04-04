@@ -11,7 +11,9 @@ trait PerformanceServiceBuilder extends ServiceBuilder {
 	
 	val performanceService = {
 		
-		path("runs" / Name / Description) { (name, description) => get { _.complete("You looking for " + name + " and " + description + "?") } }
+		path("runs" / Name / Description) { (name, description) =>
+			get { _.complete("You looking for " + name + " and " + description + "?") }
+		}
 		
 	}
 	
