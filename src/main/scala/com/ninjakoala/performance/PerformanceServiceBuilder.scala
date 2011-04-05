@@ -10,11 +10,13 @@ trait PerformanceServiceBuilder extends ServiceBuilder with RunMarshallers {
     val Description = "[^/]+".r
 
     val performanceService = {
-
         path("runs" / Name / Description) { (name, description) =>
-            get { _.complete(runStore.getRun(name, description)) }
+            get { _.complete(getRunFromStore(name, description)) }
         }
-
+    }
+    
+    def getRunFromStore(name: String, description: String) = {
+        runStore.getRun(name, description)
     }
 
 }

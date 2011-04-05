@@ -10,14 +10,8 @@ class Boot {
 
     val mainModule = new PerformanceServiceBuilder {
         def runStore = new RunStore {
-            def getRun(name: String, description: String) = {
-                Run("name", "description", Nil)
-            }
-            def createRun(run: Run) {
-                
-            }
-            def deleteRun(name: String, description: String) {
-                
+            def getRun(name: String, description: String): Run = {
+                return Run("name", "description")
             }
         }
     }
