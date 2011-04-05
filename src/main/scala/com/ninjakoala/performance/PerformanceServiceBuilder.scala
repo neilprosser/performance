@@ -2,7 +2,9 @@ package com.ninjakoala.performance
 
 import cc.spray._
 
-trait PerformanceServiceBuilder extends ServiceBuilder {
+trait PerformanceServiceBuilder extends ServiceBuilder with RunMarshallers {
+    
+    def runStore: RunStore
 
     val Name = "[^/]+".r
     val Description = "[^/]+".r
@@ -10,7 +12,7 @@ trait PerformanceServiceBuilder extends ServiceBuilder {
     val performanceService = {
 
         path("runs" / Name / Description) { (name, description) =>
-            get { _.complete("You looking for " + name + " and " + description + "?") }
+            get { _.complete(runStore.getRun(name, description)) }
         }
 
     }

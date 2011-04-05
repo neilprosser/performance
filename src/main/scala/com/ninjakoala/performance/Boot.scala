@@ -9,7 +9,17 @@ import utils.ActorHelpers._
 class Boot {
 
     val mainModule = new PerformanceServiceBuilder {
-        // bake your module cake here
+        def runStore = new RunStore {
+            def getRun(name: String, description: String) = {
+                Run("name", "description", Nil)
+            }
+            def createRun(run: Run) {
+                
+            }
+            def deleteRun(name: String, description: String) {
+                
+            }
+        }
     }
 
     // start the root service actor (and any service actors you want to specify supervision details for)

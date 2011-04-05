@@ -10,6 +10,8 @@ class Project(info: ProjectInfo) extends DefaultWebProject(info) with AkkaProjec
   object Repositories {
     // e.g. val akkaRepo = MavenRepository("Akka Repository", "http://akka.io/repository")
   }
+
+  override def compileOptions: Seq[CompileOption] = Deprecation :: Nil
   
   // -------------------------------------------------------------------------------------------------------------------
   // ModuleConfigurations
