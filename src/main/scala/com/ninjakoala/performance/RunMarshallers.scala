@@ -10,11 +10,11 @@ trait RunMarshallers extends DefaultMarshallers {
     this: PerformanceServiceBuilder =>
 
     implicit object RunMarshaller extends MarshallerBase[Run] {
-        val canMarshalTo = List(ContentType(`application/json`), ContentType(`text/plain`))
+        val canMarshalTo = ContentType(`application/json`) :: ContentType(`text/xml`) :: Nil
 
         def marshal(value: Run, contentType: ContentType) = contentType match {
             case x @ ContentType(`application/json`, _) => HttpContent(x, marshalToJson(value))
-            case x @ ContentType(`text/plain`, _) => HttpContent(x, "Argh!")
+            case x @ ContentType(`text/xml`, _) => HttpContent(x, "<woot />")
             case _ => throw new IllegalArgumentException
         }
 

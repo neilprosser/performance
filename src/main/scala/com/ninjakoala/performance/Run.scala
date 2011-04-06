@@ -1,4 +1,10 @@
 package com.ninjakoala.performance
 
-sealed case class Run(name: String, description: String) {
+object Run {
+    def apply(name: String, description: String) = {
+        new Run(name, description)
+    }
+}
+
+class Run(val name: String, val description: String) {
 }

@@ -10,9 +10,13 @@ class Boot {
 
     val mainModule = new PerformanceServiceBuilder {
         def runStore = new RunStore {
-            def getRun(name: String, description: String): Run = {
-                return Run("name", "description")
-            }
+            val runs = scala.collection.mutable.Map.empty[String, Run]
+	        def getRun(name: String, description: String) = {
+	            runs.get(name + "-" + description)
+	        }
+	        def createRun(name: String, description: String) = {
+	            runs += (name + "-" + description -> Run(name, description))
+	        }
         }
     }
 
@@ -29,5 +33,5 @@ class Boot {
     // attach an HttpService (which is also an actor)
     // the root service automatically starts the HttpService if it is unstarted
     actor[RootService] ! Attach(HttpService(mainModule.performanceService))
-    
+
 }
