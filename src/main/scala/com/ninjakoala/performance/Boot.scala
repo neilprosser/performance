@@ -9,15 +9,7 @@ import utils.ActorHelpers._
 class Boot {
 
     val mainModule = new PerformanceServiceBuilder {
-        def runStore = new RunStore {
-            val runs = scala.collection.mutable.Map.empty[String, Run]
-	        def getRun(name: String, description: String) = {
-	            runs.get(name + "-" + description)
-	        }
-	        def createRun(name: String, description: String) = {
-	            runs += (name + "-" + description -> Run(name, description))
-	        }
-        }
+        val runStore = new HashMapRunStore()
     }
 
     // start the root service actor (and any service actors you want to specify supervision details for)

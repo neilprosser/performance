@@ -12,15 +12,7 @@ import HttpStatusCodes._
 class PerformanceServiceBuilderSpec extends Specification
     with SprayTest with PerformanceServiceBuilder with DontDetach {
 
-    def runStore = new RunStore {
-        val runs = scala.collection.mutable.Map.empty[String, Run]
-        def getRun(name: String, description: String) = {
-            runs.get(name + "-" + description)
-        }
-        def createRun(name: String, description: String) = {
-            runs += (name + "-" + description -> Run(name, description))
-        }
-    }
+    val runStore = new HashMapRunStore()
 
     "The performance service" should {
         "not find a run when it doesn't exist" in {
@@ -29,14 +21,26 @@ class PerformanceServiceBuilderSpec extends Specification
             }.response mustEqual failure(NotFound, "Run with name: name and description: description could not be found")
         }
         "get by name and description for JSON" in {
-            testService(HttpRequest(GET, "/runs/name/description", headers = List(`Accept`(`application/json`)))) {
+        	testService(HttpRequest(PUT, "/runs/json/json",
+        	        headers = List(`Content-Type`(`application/json`)),
+        	        content = Some(HttpContent(ContentType(`application/json`), "{}")))) {
                 performanceService
-            }.response.content mustEqual Some(HttpContent(`application/json`, "{ name:\"name\", description:\"description\" }"))
+            }
+            testService(HttpRequest(GET, "/runs/json/json",
+                    headers = List(`Accept`(`text/xml`)))) {
+                performanceService
+            }.response.content mustEqual Some(HttpContent(`text/xml`, "<run name=\"json\" description=\"json\" />"))
         }
         "get by name and description for XML" in {
-            testService(HttpRequest(GET, "/runs/name/description", headers = List(`Accept`(`text/xml`)))) {
+            testService(HttpRequest(PUT, "/runs/xml/xml",
+                    headers = List(`Content-Type`(`text/xml`)),
+        	        content = Some(HttpContent(ContentType(`text/xml`), "<woot />")))) {
                 performanceService
-            }.response.content mustEqual Some(HttpContent(`text/xml`, "<woot />"))
+            }
+            testService(HttpRequest(GET, "/runs/xml/xml",
+                    headers = List(`Accept`(`text/xml`)))) {
+                performanceService
+            }.response.content mustEqual Some(HttpContent(`text/xml`, "<run name=\"xml\" description=\"xml\" />"))
         }
     }
 
