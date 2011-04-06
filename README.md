@@ -1,15 +1,11 @@
 # Performance
 
-Assuming you have Gradle (http://www.gradle.org) installed you should need to clone this repository, go into the directory and use: 
+Assuming you have SBT (http://code.google.com/p/simple-build-tool/) installed just clone the repository, go into the directory and use: 
 
-    gradle eclipse
+    sbt update eclipse
 
-which will create the necessary files to import your project into Eclipse. You can also use:
+which will create the necessary files to import your project into Eclipse. When you're ready try:
 
-    gradle cleanEclipse eclipse
+    sbt jetty-run
 
-to regenerate your Eclipse project and classpath. When you're ready try:
-
-    gradle jettyRun
-
-to run your creation in Jetty.
+to run your creation in Jetty!
