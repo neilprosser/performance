@@ -4,7 +4,7 @@ import cc.spray._
 import http._
 import HttpStatusCodes._
 
-trait PerformanceServiceBuilder extends ServiceBuilder with RunMarshallers with RunUnmarshallers {
+trait PerformanceServiceBuilder extends ServiceBuilder with CustomMarshallers with CustomUnmarshallers {
 
     val runStore: RunStore
 
@@ -20,12 +20,11 @@ trait PerformanceServiceBuilder extends ServiceBuilder with RunMarshallers with 
                 }
             } ~
             put {
-                contentAs[Run] { run => 
+                contentAs[JtlContent] { jtl => 
                 	detached { ctx =>
-                		saveRun(run)
+                		saveRun(Run(name, description))
                 	    ctx.complete("Run saved")
                 	}
-                	
                 }
             }
         }

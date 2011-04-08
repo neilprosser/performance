@@ -5,7 +5,7 @@ import http._
 import marshalling._
 import MediaTypes._
 
-trait RunMarshallers extends DefaultMarshallers {
+trait CustomMarshallers extends DefaultMarshallers {
 
     this: PerformanceServiceBuilder =>
 
