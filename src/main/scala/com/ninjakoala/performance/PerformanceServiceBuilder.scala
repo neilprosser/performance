@@ -12,30 +12,56 @@ trait PerformanceServiceBuilder extends ServiceBuilder with CustomMarshallers wi
     val Description = "[^/]+".r
 
     val performanceService = {
-        path("runs" / Name / Description) { (name, description) =>
+        path("runs") {
             get {
-                getRunFromStore(name, description) match {
+                _.complete(getAllRunsFromStore())
+            }
+        } ~
+        path("run" / Name / Description) { (runName, runDescription) =>
+            get {
+                getRunFromStore(runName, runDescription) match {
                     case Some(r) => _.complete(r)
-                    case None => _.fail(NotFound, "Run with name: " + name + " and description: " + description + " could not be found")
+                    case None => _.fail(NotFound, "Run '" + runName + "/" + runDescription + "' could not be found")
                 }
-            } ~
+            }
+        } ~
+        path("run" / Name / Description / "test" / Name) { (runName, runDescription, testName) =>
+        	get {
+        		getTestFromStore(runName, runDescription, testName) match {
+        			case Some(t) => _.complete(t)
+        			case None => _.fail(NotFound, "Test '" + testName + "' from run '" + runName + "/" + runDescription + "' could not be found")
+                }
+        	} ~
             put {
                 contentAs[JtlContent] { jtl => 
-                	detached { ctx =>
-                		saveRun(Run(name, description))
-                	    ctx.complete("Run saved")
-                	}
+                    detached {
+                        saveTest(runName, runDescription, testName, jtl)
+                        _.complete("Run saved")
+                    }
                 }
             }
         }
     }
     
-    def getRunFromStore(name: String, description: String) = {
-        runStore.getRun(name, description)
+    def getAllRunsFromStore() = {
+        runStore.getRuns()
     }
     
-    def saveRun(run: Run) = {
+    def getRunFromStore(runName: String, runDescription: String) = {
+        runStore.getRun(runName, runDescription)
+    }
+    
+    def getTestFromStore(runName: String, runDescription: String, testName: String) = {
+        runStore.getTest(runName, runDescription, testName)
+    }
+    
+    def saveRun(runName: String, runDescription: String) = {
+        val run = Run(runName, runDescription, scala.collection.immutable.List.empty[Test])
         runStore.saveRun(run)
+    }
+    
+    def saveTest(runName: String, runDescription: String, testName: String, jtlContent: JtlContent) = {
+        
     }
 
 }

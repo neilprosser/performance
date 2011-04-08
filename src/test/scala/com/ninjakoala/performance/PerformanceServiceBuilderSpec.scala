@@ -15,21 +15,20 @@ class PerformanceServiceBuilderSpec extends Specification
     val runStore = new HashMapRunStore()
 
     "The performance service" should {
-        "not find a run when it doesn't exist" in {
-            testService(HttpRequest(GET, "/runs/name/description")) {
+        "succeed when getting all runs when none exist" in {
+            testService(HttpRequest(GET, "/runs")) {
                 performanceService
-            }.response mustEqual failure(NotFound, "Run with name: name and description: description could not be found")
+            }.response.content mustEqual Some(HttpContent(`application/json`, "{\"runs\":[]}"))
         }
-        "get by name and description for XML" in {
-            testService(HttpRequest(PUT, "/runs/xml/xml",
-                    headers = List(`Content-Type`(`text/xml`)),
-        	        content = Some(HttpContent(ContentType(`text/xml`), "<woot />")))) {
+        "not find a run when it doesn't exist" in {
+            testService(HttpRequest(GET, "/run/name/description")) {
                 performanceService
-            }
-            testService(HttpRequest(GET, "/runs/xml/xml",
-                    headers = List(`Accept`(`text/xml`)))) {
+            }.response mustEqual failure(NotFound, "Run 'name/description' could not be found")
+        }
+        "not find a test when it doesn't exist" in {
+            testService(HttpRequest(GET, "/run/name/description/test/name")) {
                 performanceService
-            }.response.content mustEqual Some(HttpContent(`text/xml`, "<run name=\"xml\" description=\"xml\" />"))
+            }.response mustEqual failure(NotFound, "Test 'name' from run 'name/description' could not be found")
         }
     }
 

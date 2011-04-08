@@ -1,6 +1,8 @@
 package com.ninjakoala.performance
 
 trait RunStore {
-    def getRun(name: String, description: String): Option[Run]
+    def getRuns(): Iterable[Run]
+    def getRun(runName: String, runDescription: String): Option[Run]
+    def getTest(runName: String, runDescription: String, testName: String): Option[Test]
     def saveRun(run: Run)
 }
