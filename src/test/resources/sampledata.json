@@ -1,0 +1,25 @@
+// Run
+{
+  "name": "master-catalogue-post-source-metadata",
+  "description: "34",
+  "url": "http://localhost:8080/run/master-catalogue-post-source-metadata/34",
+  "tests": [
+    "http://localhost:8080/run/master-catalogue-post-source-metadata/34/test/post-model",
+    "http://localhost:8080/run/master-catalogue-post-source-metadata/34/test/post-source-metadata"
+  ]
+}
+
+// Test
+{
+  "name": "post-model",
+  "url": "http://localhost:8080/run/master-catalogue-post-source-metadata/34/test/post-model",
+  "samples": [{
+    "properties": [{
+      "name": "t",
+      "value": 123
+    },{
+      "name": "s",
+      "value": true
+    }]
+  }]
+}
