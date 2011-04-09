@@ -33,10 +33,10 @@ trait PerformanceServiceBuilder extends ServiceBuilder with CustomMarshallers wi
                 }
         	} ~
             put {
-                contentAs[JtlContent] { jtl => 
+        	    contentAs[JtlContent] { jtl => 
                     detached {
-                        saveTest(runName, runDescription, testName, jtl)
-                        _.complete("Run saved")
+                        saveTestToStore(runName, runDescription, testName, jtl)
+                        _.complete("Test saved")
                     }
                 }
             }
@@ -55,13 +55,8 @@ trait PerformanceServiceBuilder extends ServiceBuilder with CustomMarshallers wi
         runStore.getTest(runName, runDescription, testName)
     }
     
-    def saveRun(runName: String, runDescription: String) = {
-        val run = Run(runName, runDescription, scala.collection.immutable.List.empty[Test])
-        runStore.saveRun(run)
-    }
-    
-    def saveTest(runName: String, runDescription: String, testName: String, jtlContent: JtlContent) = {
-        
+    def saveTestToStore(runName: String, runDescription: String, testName: String, jtlContent: JtlContent) = {
+        runStore.saveTest(runName, runDescription, testName, jtlContent)
     }
 
 }

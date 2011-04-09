@@ -13,11 +13,20 @@ class HashMapRunStore extends RunStore {
     }
     
     def getTest(runName: String, runDescription: String, testName: String) = {
-        None
+        getRun(runName, runDescription) match {
+            case Some(r) => r.tests.find(_.name == testName)
+            case _ => None
+        }
     }
     
-    def saveRun(run: Run) = {
-        runs += (createKey(run.name, run.description) -> run)
+    def saveTest(runName: String, runDescription: String, testName: String, jtlContent: JtlContent) = {
+        val test = List(Test(testName, jtlContent.samples))
+        val tests = getRun(runName, runDescription) match {
+            case Some(r) => r.tests ++ test
+            case _ => test
+        }
+        
+        runs += (createKey(runName, runDescription) -> Run(runName, runDescription, tests))
     }
     
     private def createKey(runName: String, runDescription: String) = {

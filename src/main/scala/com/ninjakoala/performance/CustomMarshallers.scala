@@ -17,12 +17,12 @@ trait CustomMarshallers extends DefaultMarshallers {
         
         def marshal(value: Iterable[Run], contentType: ContentType) = contentType match {
             case x @ ContentType(`application/json`, _) => HttpContent(x, compact(render(marshalToJson(value))))
-            case _ => { println("In here? " + contentType); throw new IllegalArgumentException }
+            case _ => throw new IllegalArgumentException
         }
         
         def marshalToJson(value: Iterable[Run]) = {
             ("runs" -> value.map { r =>
-            	"http://localhost:8080/runs/" + r.name + "/" + r.description 
+            	"/runs/" + r.name + "/" + r.description 
             })
         }
         
@@ -40,8 +40,8 @@ trait CustomMarshallers extends DefaultMarshallers {
         def marshalToJson(run: Run) = {
             ("name" -> run.name) ~
             ("description" -> run.description) ~
-            ("tests" -> run.tests.map {
-                t => "http://localhost:8080/runs/" + run.name + "/" + run.description + "/test/" + t.name
+            ("tests" -> run.tests.map { t =>
+            	"/runs/" + run.name + "/" + run.description + "/test/" + t.name
             })
         }
         
@@ -56,8 +56,14 @@ trait CustomMarshallers extends DefaultMarshallers {
             case _ => throw new IllegalArgumentException
         }
         
-        def marshalToJson(value: Test) = {
-            ("name" -> value.name)
+        def marshalToJson(test: Test) = {
+            ("name" -> test.name) ~
+            ("samples" -> test.samples.map { s =>
+            	("properties" -> s.properties.map { p =>
+            		("name" -> p.name) ~
+            		("value" -> p.value)
+            	})
+            })
         }
         
     }
