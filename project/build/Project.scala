@@ -2,7 +2,7 @@ import sbt._
 import de.element34.sbteclipsify._
 import Process._
 
-class Project(info: ProjectInfo) extends DefaultWebProject(info) with AkkaProject with Eclipsify {
+class Project(info: ProjectInfo) extends DefaultWebProject(info) with AkkaProject with Eclipsify with IdeaProject {
   
   // -------------------------------------------------------------------------------------------------------------------
   // All repositories *must* go here! See ModuleConfigurations below.

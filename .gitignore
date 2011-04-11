@@ -1,18 +1,12 @@
-/bin
-/build
-target
-
 .classpath
 .project
-.settings/
 .scala_dependencies
-.gradle/
 
-.DS_Store?
-
-/.idea/
 /project/boot/
 /project/plugins/project
+target/
 lib_managed/
 src_managed/
+
+.idea/
 *.iml
