@@ -8,13 +8,13 @@ import HttpStatusCodes._
 import xml.NodeSeq
 
 trait CustomUnmarshallers extends DefaultUnmarshallers {
-    
+
     this: PerformanceServiceBuilder =>
-    
+
     implicit object JtlUnmarshaller extends UnmarshallerBase[JtlContent] {
-        
+
         val canUnmarshalFrom = ContentTypeRange(`text/xml`) :: Nil
-        
+
         def unmarshal(content: HttpContent) = content.contentType match {
             case x @ ContentType(`text/xml`, _) => NodeSeqUnmarshaller.unmarshal(content) match {
                 case Right(ns) => unmarshalFromNodeSeq(ns)
@@ -22,11 +22,11 @@ trait CustomUnmarshallers extends DefaultUnmarshallers {
             }
             case _ => throw new IllegalStateException
         }
-        
-        def unmarshalFromNodeSeq(nodeSeq : NodeSeq) = {
-            
+
+        def unmarshalFromNodeSeq(nodeSeq: NodeSeq) = {
+
             val httpSamples = (nodeSeq \ "httpSample")
-            
+
             httpSamples.isEmpty match {
                 case true => throw HttpException(BadRequest, "JTL content was invalid")
                 case false => {
@@ -34,9 +34,9 @@ trait CustomUnmarshallers extends DefaultUnmarshallers {
                     Right(new JtlContent(samples))
                 }
             }
-            
+
         }
-        
+
     }
 
 }
